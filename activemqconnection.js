@@ -21,7 +21,7 @@ var AMQConnection = function(stomp_args, stomp_headers, call_back_function) {
     }
     
     function onMessage(message){
-        util.log("Got message: " + message.headers['message-id']);
+        util.log('Recieved message: ' + message.headers['message-id']);
         amqClient.ack(message.headers['message-id']);
         messages++;
     }
