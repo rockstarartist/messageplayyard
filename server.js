@@ -1,20 +1,10 @@
-var express = require('express')
-  , app = express()
-  , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server);
+//Setup Variables for Socket.IO and general Server variables
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
 
-server.listen(8080);
-
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
-});
-
-app.get('/app.js', function(req, res) {
-  res.sendfile(__dirname + '/app.js');
-});
-
-
-//Setup STOMP/ActiveMQ Connection
+//Setup Variables for ActiveMQ/STOMP Connection
 var sys = require('util');
 var stomp = require('stomp');
 
@@ -25,18 +15,28 @@ var stomp_args = {
     host: 'localhost',
     debug: false,
     login: 'guest',
-    passcode: 'guest',
+    passcode: 'guest'
 };
 
 var client = new stomp.Stomp(stomp_args);
 var headers = {
     destination: '/topic/chatmessages',
-    ack: 'client',
+    ack: 'client'
 };
 
 var messages = 0;
 
+//Start Server and have it begin listening on specified port
+server.listen(8080);
 
+//Setup server request/response calls
+app.get('/', function (req, res) {
+  res.sendfile(__dirname + '/index.html');
+});
+
+app.get('/app.js', function(req, res) {
+  res.sendfile(__dirname + '/app.js');
+});
 
 
 //WebSocket Connection with socket.io

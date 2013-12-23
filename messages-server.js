@@ -6,6 +6,10 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var connectedClients;
 
+//Setup Variables for ActiveMQ Connection
+var AMQConnection = require('AMQConnection');
+var stompConn = AMQConnection('x','y','z');
+
 
 function init(){
     connectedClients = [];
@@ -19,18 +23,18 @@ var setEventHandlers = function(){
 }
 
 function onSocketConnection(client) {
-    util.log("New client has connected: " + client.id);
-    client.on("disconnect", onClientDisconnect);
+    util.log('New client has connected: ' + client.id);
+    client.on('disconnect', onClientDisconnect);
     client.on('user:new', onNewUser);
     client.on('broadcast:msg', onBroadCastMessage);
 };
 
 function onClientDisconnect() {
-    util.log("User has disconnected: " + this.id);
+    util.log('User has disconnected: ' + this.id);
 };
 
 function onNewUser(data) {
-
+    stompConn.init;
 };
 
 function onBroadCastMessage(data) {
